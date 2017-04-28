@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>购物车</title>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
+	<script src="js/angular.min.js"></script>
+</head>
+<body ng-app="myapp">
+	<div ng-controller="car">
+	<table class="table table-hover text-center">
+		
+		<tr>
+			<div class="input-group">
+			  <span class="input-group-addon" id="basic-addon1">搜索</span>
+			  <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1" ng-model="seach">
+			</div>
+		</tr>
+		<tr>
+			<th class="text-center">名称</th>
+			<th class="text-center">价格</th>
+			<th class="text-center">数量</th>
+			<th class="text-center">总和</th>
+			<th class="text-center">操作</th>
+		</tr>
+		<tr>
+			<td colspan="5" ng-show="data.length==0">购物车为空</td>
+		</tr>
+		<tr ng-repeat="item in data | filter:{name:seach}">
+			<td>{{item.name}}</td>
+			<td>{{item.price}}</td>
+			<td style="width: 20%;">
+			<form class="form-inline">
+			  <div class="form-group">
+			    <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
+			    <div class="input-group">
+			      <div class="input-group-addon" ng-click="numcut(item.id)" style="cursor: pointer;">-</div>
+			      <input type="text" class="form-control" id="exampleInputAmount" placeholder="{{item.num}}" style="text-align: center;">
+			      <div class="input-group-addon" ng-click="item.num=item.num+1" style="cursor: pointer;">+</div>
+			    </div>
+			  </div>
+</form></td>
+			<td>{{item.num*item.price}}</td>
+			<td><button type="button" class="btn btn-danger" ng-click="del(item.id)">删除</button></td>
+		</tr>
+		<tr>
+			<td>总数</td>
+			<td>{{getNum()}}</td>
+			<td>总价</td>
+			<td>{{getPrice()}}</td>
+			<td><button type="button" class="btn btn-danger" ng-click="clear()">清空</button></td>
+		</tr>
+	</table>
+	</div>
+</body>
+<script>
+
+	angular.module("myapp",[]).controller("car",["$scope",function($scope){   //scope范围  区间    代表控制器里能作用的范围
+		$scope.data=[
+		{id:1,name:"衣服",price:200,num:2},
+		{id:2,name:"裤子",price:100,num:2},
+		{id:3,name:"袜子",price:10,num:3},
+		{id:4,name:"玩具",price:300,num:2},
+		{id:5,name:"电脑",price:5000,num:1}
+		
+		];
+		$scope.clear=function(){
+			$scope.data=[];
+		};
+		$scope.getNum=function(){
+			var all=0;
+			for (var i=0;i<$scope.data.length;i++) {
+				all+=$scope.data[i].num;
+			}
+			return all;
+		};
+		$scope.getPrice=function(){
+			var all=0;
+			for (var i=0;i<$scope.data.length;i++) {
+				all+=$scope.data[i].num*$scope.data[i].price;
+			}
+			return all;
+		};
+		$scope.del=function(id){
+			$scope.data.forEach(function(val,index){
+				if (val.id==id) {
+					$scope.data.splice(index,1);
+				}
+			})
+		};
+		 $scope.numcut=function (id) {
+                 $scope.data.forEach(function (val,index) {
+                     if(val.id==id){
+                          if(val.num==1){
+                               $scope.data.splice(index,1);
+                           }
+                           val.num--;
+                       }
+                   })
+              }
+              $scope.seach="";
+		
+	}]);
+
+</script>
+</html>

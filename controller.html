@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>Document</title>
+	<script src="js/angular.min.js"></script>
+</head>
+<body ng-app="myapp">
+	
+	<div ng-controller="control">     <!--指定视图-->
+		<input type="text" ng-model="aa"/>
+		<input type="text" ng-model="aa"/>
+	</div>
+</body>
+<script type="text/javascript">
+	angular.module("myapp",[]).controller("control",function($scope){   //scope范围  区间    代表控制器里能作用的范围
+		$scope.aa=10;
+	})
+</script>
+</html>
