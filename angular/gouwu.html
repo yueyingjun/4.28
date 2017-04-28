@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <script src="script/angular.min.js"></script>
+    <style>
+        input{
+            width: 60px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body ng-app="myapp">
+<div class="container" ng-controller="myCtrl">
+    <div class="row">
+        <div class="page-header">
+            <h2>购物车</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <table class="table table-hover">
+                <tr>
+                    <td>#</td>
+                    <td>商品名</td>
+                    <td>单价</td>
+                    <td>数量</td>
+                    <td>总价</td>
+                    <td>操作</td>
+                </tr>
+                <tr ng-repeat="goods in goodses" id="ad">
+                    <td><span ng-bind="goods.goodsID"></span></td>
+                    <td><span ng-bind="goods.goodsName"></span></td>
+                    <td><span ng-bind="goods.goodsPrice"></span></td>
+                    <td><input type="text" ng-model="goods.count"></td>
+                    <td><span ng-bind="goods.goodsPrice*goods.count"></span></td>
+                    <td><a href="" ng-click="delete($index)">删除</a></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>总计金额:{{all()}}</td>
+                    <td>运费:{{fei()}}</td>
+                    <td>实际金额:{{total()}}</td>
+                    <td><a href="" ng-click="del($index)">清空购物车</a></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    var app=angular.module("myApp",[]);
+    app.controller("myCtrl",["$scope",function ($scope) {
+        $scope.goodses=[
+            {goodsID:1,goodsName:"商品A",goodsPrice:12,count:1,subtotal:12},
+            {goodsID:2,goodsName:"商品B",goodsPrice:18,count:1,subtotal:18},
+            {goodsID:3,goodsName:"商品C",goodsPrice:13,count:1,subtotal:13},
+            {goodsID:4,goodsName:"商品D",goodsPrice:8,count:1,subtotal:8},
+            {goodsID:5,goodsName:"商品E",goodsPrice:10,count:1,subtotal:10},
+        ];
+
+        $scope.delete=function ($index) {
+            $scope.goodses.splice($index,1)
+        }
+
+        $scope.del=function ($index) {
+            $scope.goodses=[];
+        }
+        $scope.all=function () {
+            var all=0;
+            for(var i=0;i<$scope.goodses.length;i++){
+                all+=$scope.goodses[i].goodsPrice*$scope.goodses[i].count;
+            }
+            return all;
+        }
+
+        $scope.fei=function () {
+            var fei=0;
+            var all=0;
+            for(var i=0;i<$scope.goodses.length;i++){
+                all+=$scope.goodses[i].goodsPrice*$scope.goodses[i].count;
+            }
+            if(all<=0){
+                fei=0
+            }else if(all<100){
+                fei=10;
+            }else if(all<200){
+                fei=20
+            }else if(all<500){
+                fei=30
+            }
+            return fei;
+        }
+
+
+        $scope.total=function () {
+            var fei=0;
+            var all=0;
+            for(var i=0;i<$scope.goodses.length;i++){
+                all+=$scope.goodses[i].goodsPrice*$scope.goodses[i].count;
+            }
+            if(all<=0){
+                fei=0
+            }else if(all<100){
+                fei=10;
+            }else if(all<200){
+                fei=20
+            }else if(all<500){
+                fei=30
+            }
+            all+=fei;
+            return all;
+        }
+    }])
+</script>
+</html>
