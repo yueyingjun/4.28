@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>购物车</title>
+</head>
+<link rel="stylesheet" href="css/bootstrap.css">
+<script src="js/angular.min.js"></script>
+<style>
+    caption{
+        text-align: center;
+        font-size: 30px;
+    }
+    th,td{
+        text-align: center;
+    }
+</style>
+<body>
+<div ng-app="myapp" ng-controller="con">
+    <form class="form-inline">
+        <div class="form-group" style="margin-left:40px;margin-top: 20px">
+            <label for="exampleInputName2">搜索</label>
+            <input type="text" class="form-control" ng-model="seach" id="exampleInputName2" placeholder="Jane Doe">
+        </div>
+    </form>
+<table class="table table-hover">
+    <caption>购物车</caption>
+    <thead>
+    <tr>
+        <th>名称</th>
+        <th>单价</th>
+        <th>数量</th>
+        <th>总价</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-show="data.length==0">
+        <td colspan="5">没有一件商品</td>
+    </tr>
+    <tr ng-repeat="i in data | filter:{name:seach}">
+        <td>{{i.name}}</td>
+        <td>{{i.pirce}}</td>
+        <td>
+            <form class="form-inline">
+                <div class="form-group">
+                    <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
+                    <div class="input-group">
+                        <div class="input-group-addon" ng-click="numcut(i.id)">-</div>
+                        <input type="text" class="form-control" ng-model="i.num" id="exampleInputAmount" placeholder="pirce">
+                        <div class="input-group-addon" ng-click="i.num=i.num+1">+</div>
+                    </div>
+                </div>
+            </form>
+        </td>
+        <td>{{i.pirce*i.num}}</td>
+        <td><span class="btn btn-danger" ng-click="del(i.id)">删除</span></td>
+    </tr>
+    <tr>
+        <td>总数量</td>
+        <td>{{getnum()}}</td>
+        <td>总价格</td>
+        <td>{{getpirce()}}</td>
+        <td><span class="btn btn-danger" ng-click="clear()">清空购物车</span></td>
+    </tr>
+    </tbody>
+</table>
+</div>
+</body>
+</html>
+<script>
+    angular.module("myapp",[])
+        .controller("con",function ($scope) {
+            $scope.data=[
+                {id:1,name:"裙子",pirce:100,num:2},
+                {id:2,name:"裤衩",pirce:200,num:1},
+                {id:3,name:"背心",pirce:50,num:3},
+                {id:4,name:"袜子",pirce:80,num:2}
+            ];
+            $scope.getnum=function () {
+                var num=0;
+                $scope.data.forEach(function (val,index) {
+                    if(Number(val.num)&&Number(val.num)>=0){
+                        num+=Number(val.num);
+                    }else{
+                        val.num=1;
+                    }
+                })
+                return num;
+            }
+            $scope.getpirce=function () {
+                var num=0;
+                $scope.data.forEach(function (val,index) {
+                    num+=val.num*val.pirce;
+                })
+                return num;
+            }
+            $scope.del=function (id) {
+                $scope.data.forEach(function (val,index) {
+                    if(val.id==id){
+                        $scope.data.splice(index,1);
+                    }
+                })
+            }
+            $scope.clear=function () {
+                $scope.data=[];
+            }
+            $scope.numcut=function (id) {
+                $scope.data.forEach(function (val,index) {
+                    if(val.id==id){
+                        if(val.num==1){
+                            $scope.data.splice(index,1);
+                        }
+                        val.num--;
+                    }
+                })
+            }
+            $scope.seach="";
+
+        })
+</script>
