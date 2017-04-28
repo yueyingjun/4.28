@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>controller</title>
+    <!--<script src="script/jquery-3.2.0.min.js"></script>-->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="script/angular.min.js"></script>
+</head>
+<body ng-app="myApp">
+    <div ng-controller="control">
+        <nav class="navbar navbar-default " role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">购物车</a>
+                </div>
+                <div>
+                    <form class="navbar-form navbar-left" role="search">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search" ng-model="search">
+                        </div>
+                        <!--<button type="submit" class="btn btn-default">搜索</button>-->
+                    </form>
+                </div>
+            </div>
+        </nav>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>商品名称</th>
+                <th>数量</th>
+                <th>单价</th>
+                <th>总价</th>
+                <th>管理</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr  ng-repeat="item in data | filter:{name:search}">
+                <td>{{item.name}}</td>
+                <td>
+                    <div class="input-group">
+                        <span class="input-group-addon" ng-click="jian(item.id)">-</span>
+                        <input type="text" class="form-control" value="{{item.num}}">
+                        <span class="input-group-addon" ng-click="jia(item.id)">+</span>
+                    </div>
+                <td>{{item.danjia}}</td>
+                <td>{{item.num*item.danjia}}</td>
+                <td><button type="button" class="btn btn-danger" ng-click="del(item.id)">删除</button></td>
+            </tr>
+            <tr>
+                <td>总数量</td>
+                <td>{{getNums()}}</td>
+                <td>总价</td>
+                <td>{{getZongjia()}}</td>
+                <td><button type="button" class="btn btn-danger" ng-click="delAll()">清空购物车</button></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+<script>
+    //中括号代表依赖注入
+    //控制器：将相应的数据放到相应的视图中
+    angular.module("myApp",[]).controller("control",["$scope",function (aaa) {
+        aaa.search="";
+        aaa.data=[
+            {id:"1",name:"皮鞋",danjia:500,num:1},
+            {id:"2",name:"雨伞",danjia:600,num:1},
+            {id:"3",name:"棉裤",danjia:300,num:2},
+            {id:"4",name:"手表",danjia:200,num:3},
+            {id:"5",name:"衬衣",danjia:222,num:3},
+        ];
+        aaa.getNums=function () {
+            var nums=0;
+            aaa.data.forEach(function (val,index) {
+                if(parseInt(val.num)&&parseInt(val.num)>0){
+                    nums+=parseInt(val.num);
+                    val.num=parseInt(val.num);
+                }else{
+                    val.num=0;
+                }
+            });
+            return nums;
+        };
+        aaa.getZongjia=function () {
+            var nums=0;
+            aaa.data.forEach(function (val,index) {
+                nums+=val.num*val.danjia;
+            });
+            return nums;
+        };
+        aaa.del=function (id) {
+            aaa.data.forEach(function (val,index) {
+                if(id==val.id){
+                    aaa.data.splice(index,1)
+                }
+            })
+        }
+        aaa.delAll=function () {
+            aaa.data.splice(0,aaa.data.length)
+        }
+        aaa.jia=function (id) {
+            aaa.data.forEach(function (val,index) {
+                if(id==val.id){
+//                    var old=aaa.data[id-1].num;
+//                    aaa.data[id-1].num=old+1;
+                    val.num++;
+                }
+            })
+        }
+        aaa.jian=function (id) {
+            aaa.data.forEach(function (val,index) {
+                if(id==val.id){
+//                    var old=aaa.data[id-1].num;
+//                    if(old==0){
+//                        aaa.data[id-1].num=0;
+//                    }else{
+//                        aaa.data[id-1].num=old-1;
+//                    }
+                    val.num--;
+
+                }
+            })
+        }
+    }])
+</script>
+</html>
