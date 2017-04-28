@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script src="javascript/angular.min.js"></script>
+<link rel="stylesheet" href="bootstrap.min.css">
+<style>
+    th,td{
+        width:20%;
+    }
+</style>
+<body ng-app="myapp">
+<div ng-controller="controll">
+<form class="form-inline">
+    <div class="form-group">
+        <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
+        <div class="input-group">
+            <div class="input-group-addon">搜索</div>
+            <input type="text" class="form-control" id="exampleInputAmount" placeholder="Amount" ng-model="search">
+            <div class="input-group-addon">.00</div>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Transfer cash</button>
+</form>
+<table class="table table-bordered text-center">
+    <tr>
+        <th class="text-center">商品名称</th>
+        <th class="text-center">单价</th>
+        <th class="text-center">数量</th>
+        <th class="text-center">总价</th>
+        <th class="text-center">操作</th>
+    </tr>
+    <tr ng-hide="data.length<0" ng-repeat="item in data | filter:{name:search}">
+        <td class="text-center">{{item.name}}</td>
+        <td class="text-center">{{item.prince}}</td>
+        <td class="text-center">
+            <form class="form-inline" width="400">
+                <div class="form-group">
+                    <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
+                    <div class="input-group">
+                        <div class="input-group-addon" ng-click="jian(item.id)">-</div>
+                        <input type="text" class="form-control text-center" id="exampleInputAmount" placeholder="数量" ng-model="item.num"  value="">
+                        <div class="input-group-addon" ng-click="add(item.id)">+</div>
+                    </div>
+                </div>
+            </form>
+        </td>
+        <td class="text-center">{{getdan(item)}}</td>
+        <td class="text-center "><a  class="btn btn-danger" ng-click="del(item.id)">删除</a></td>
+    </tr>
+    <tr>
+        <td class="text-center" ng-show="data.length==0" colspan="5">购物车没有物品</td>
+    </tr>
+    <tr>
+        <td class="text-center">商品统计</td>
+        <td class="text-center" colspan="3">{{getall()}}</td>
+        <td class="text-center"><a href="javascript:;" ng-click="all()" class="btn btn-success">清空</a></td>
+    </tr>
+</table>
+</div>
+<script>
+    angular.module("myapp",[])
+           .controller("controll",["$scope",function ($scope) {
+                $scope.data=[
+                    {id:1,name:"裤子",prince:"100",num:1},
+                    {id:2,name:"袜子",prince:"20",num:3},
+                    {id:3,name:"鞋子",prince:"200",num:2},
+                    {id:4 ,name:"电脑",prince:"600",num:4},
+                ];
+               $scope.search="";
+                $scope.getdan=function (item) {
+                    var nums=item.prince*item.num;
+                    return nums;
+                }
+                $scope.getall=function () {
+                    var nums=0;
+                    $scope.data.forEach(function (val,index) {
+                            if(parseInt(val.num)>0&&parseInt(val.num)){
+                                val.num=parseInt(val.num);
+                                nums+=val.prince*val.num;
+                            }else{
+                                val.num=0;
+                            }
+                    })
+                    return nums;
+                }
+                $scope.del=function (id) {
+                    $scope.data.forEach(function (val,index) {
+                            if(val.id==id){
+                                $scope.data.splice(index,1);
+                            }
+                    })
+
+                }
+                $scope.jian=function (id) {
+                    $scope.data.forEach(function (val,index) {
+                        if(val.id==id){
+                            val.num--;
+                            if(val.num<0){
+                                val.num=0;
+                            }
+                        }
+                    })
+                }
+                $scope.add=function (id) {
+                    $scope.data.forEach(function (val,index) {
+                        if(val.id==id){
+                            val.num++;
+                        }
+                    })
+                }
+                $scope.all=function () {
+                    $scope.data=[];
+                }
+           }])
+
+/*    脏值检测
+    $scope.$watch("data",function (old,news) {
+
+    },true)
+
+    onput
+    */
+
+
+
+</script>
+</body>
+</html>
