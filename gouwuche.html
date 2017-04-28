@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <script src="script/angular.min.js"></script>
+</head>
+<body ng-app="myapp">
+<div ng-controller="gouwu">
+
+    <table class="table text-center">
+        <tr>
+            <td colspan="5">
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Search" ng-model="sousuo">
+                    </div>
+                </form>
+            </td>
+        </tr>
+
+        <tr>
+            <th class="text-center">名称</th>
+            <th class="text-center">单价</th>
+            <th class="text-center">数量</th>
+            <th class="text-center">总价</th>
+            <th class="text-center">操作</th>
+        </tr>
+        <tr ng-show="data.length==0" >
+            <td colspan="5">
+                没有任何商品
+            </td>
+        </tr>
+        <tr ng-repeat="item in data | filter:{name:sousuo}" ng-show="data.length>0">
+            <td>{{item.name}}</td>
+            <td>{{item.price}}</td>
+            <td>
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
+                        <div class="input-group">
+                            <div class="input-group-addon" ng-click="jian(item.id)">-</div>
+                            <input type="text" class="form-control" id="exampleInputAmount" placeholder="Amount" ng-model="item.num">
+                            <div class="input-group-addon" ng-click="jia(item.id)">+</div>
+                        </div>
+                    </div>
+                </form>
+            </td>
+            <td>{{item.num*item.price}}</td>
+            <td ng-click="del(item.id)"><button type="button" class="btn btn-danger">删除</button></td>
+        </tr>
+        <tr>
+            <td>总数量</td>
+            <td>{{getnum()}}</td>
+            <td>总价</td>
+            <td>{{getprice()}}</td>
+            <td><button type="button" class="btn btn-danger" ng-click="clear()">清空购物车</button></td>
+        </tr>
+    </table>
+</div>
+</body>
+<script>
+    angular.module("myapp",[]).controller("gouwu",["$scope",function($scope){
+        $scope.sousuo="";
+        $scope.data=[
+            {id:1,name:"衣服",price:"200",num:1},
+            {id:2,name:"裤子",price:"100",num:2},
+            {id:3,name:"帽子",price:"30",num:3},
+            {id:4,name:"鞋子",price:"300",num:1},
+            {id:5,name:"袜子",price:"10",num:10},
+            {id:6,name:"电脑",price:"2000",num:1}
+            ];
+        $scope.getnum=function () {
+            var nums=0;
+            $scope.data.forEach(function(val,index){
+                if(parseInt(val.num)>0&&parseInt(val.num)){
+                    nums+=parseInt(val.num);
+                }
+            })
+            return nums;
+        }
+        $scope.getprice=function (val,index) {
+            var nums=0;
+            $scope.data.forEach(function(val,index){
+                nums+=val.num*val.price;
+            })
+            return nums;
+        };
+        $scope.del=function(id){
+            $scope.data.forEach(function(val,index){
+                if(val.id==id){
+                    $scope.data.splice(index,1);
+                }
+            })
+        }
+        $scope.clear=function(){
+            $scope.data=[];
+        }
+        $scope.jia=function(id){
+            $scope.data.forEach(function(val,index){
+                if(val.id==id){
+                    val.num=val.num+1;
+                }
+            })
+        }
+        $scope.jian=function(id){
+            $scope.data.forEach(function(val,index){
+                if(val.id==id){
+                    if(val.num==1){
+                        $scope.del(val.id);
+                    }else{
+                        val.num=val.num-1;
+                    }
+                }
+            })
+        }
+    }])
+</script>
+</html>
