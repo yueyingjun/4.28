@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <script src="script/angular.min.js"></script>
+</head>
+<body>
+<div ng-app="myapp">
+
+    <table class="table text-center" ng-controller="car">
+        <div class="form-group has-success has-feedback">
+            <label class="control-label" for="inputGroupSuccess3"></label>
+            <div class="input-group">
+                <span class="input-group-addon" >搜索</span>
+                <input type="text" ng-model="search" class="form-control" id="inputGroupSuccess3" aria-describedby="inputGroupSuccess3Status">
+            </div>
+            <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+            <span id="inputGroupSuccess3Status" class="sr-only">(success)</span>
+        </div>
+        <tr>
+            <th class="text-center">商品名</th>
+            <th class="text-center">价格</th>
+            <th class="text-center">数量</th>
+            <th class="text-center">总价</th>
+            <th class="text-center">操作</th>
+        </tr>
+        <tr ng-show="data.length==0">
+            <td colspan="5">购物车是空的</td>
+        </tr>
+        <tr ng-repeat="i in data|filter:{name:search}" ng-hide="data.length==0">
+            <td>{{i.name}}</td>
+            <td>{{i.price}}</td>
+            <td>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-addon" ng-click="jian(i.id)">－</div>
+                        <input type="text" ng-model="i.num" class="form-control" id="exampleInputAmount" value="{{i.num}}">
+                        <div class="input-group-addon" ng-click="jia(i.id)">+</div>
+                    </div>
+                </div>
+            </td>
+            <td colspan="1">{{i.price*1*i.num*1}}</td>
+            <td ng-click="del(i.id)" class="btn btn-danger">删除</td>
+        </tr>
+        <tr>
+            <td>总数量</td>
+            <td>{{getNum()}}</td>
+            <td>总价格</td>
+            <td>{{getPrice()}}</td>
+            <td ng-click="delAll()" class="btn-danger btn">清空购物车</td>
+        </tr>
+    </table>
+</div>
+</body>
+<script>
+    angular.module("myapp",[]).controller("car",["$scope",function (a) {
+        a.data=[
+            {id:"1",name:"哑铃",price:500,num:1},
+            {id:"2",name:"单杠",price:600,num:1},
+            {id:"3",name:"臂力器",price:100,num:1},
+            {id:"4",name:"瑜伽垫",price:200,num:1},
+            {id:"5",name:"跑步机",price:888,num:1},
+        ];
+        a.del=function (id) {
+            a.data.forEach(function (val,index) {
+                if(id==val.id){
+                    a.data.splice(index,1);
+                }
+
+            });
+        };
+        a.delAll=function () {
+            a.data=[];
+            a.getNum();
+            a.getPrice();
+        };
+        a.getNum=function () {
+            var nums=0;
+            a.data.forEach(function (val,index) {
+                if(parseInt(val.num)&&parseInt(val.num)>0){
+                    nums+=parseInt(val.num);
+                    val.num=parseInt(val.num);
+                }else{
+                    val.num=0;
+                }
+            });
+            return nums;
+        };
+        a.getPrice=function () {
+            var prices=0;
+            a.data.forEach(function (val,index) {
+                prices+=val.num*val.price;
+            });
+            return prices;
+        };
+        a.jia=function (id) {
+            a.data.forEach(function (val,index) {
+                if(id==val.id){
+                    val.num++;
+                }
+            });
+        };
+        a.jian=function (id) {
+            a.data.forEach(function (val,index) {
+                if(id==val.id){
+                    val.num--;
+                }
+            });
+        }
+
+    }])
+</script>
+</html>
