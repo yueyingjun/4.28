@@ -35,7 +35,7 @@
                 </div>
             </td>
             <td>{{item.price}}</td>
-            <td>{{item.num*item.price}}</td>
+            <td>{{item.nums*item.price}}</td>
             <td>
                 <button type="button" class="btn btn-danger" ng-click="del(item.id)">删除</button>
             </td>
@@ -61,6 +61,7 @@
             {id:5,name:"帽子",price:20,num:5},
             {id:6,name:"鞋子",price:180,num:10}
         ];
+
         //获取总数量
         $scope.getNums=function () {
             var nums=0;
@@ -74,13 +75,12 @@
             });
             return nums;
         };
-        //获取总价
+        //获取总价       
         $scope.getPrices=function () {
             var nums=0;
             $scope.data.forEach(function(val,index){
-                nums+=val.num*val.price;
-
-            });
+                nums+=val.nums*val.price;
+            })
             return nums;
         };
         //删除
