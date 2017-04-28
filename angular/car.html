@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="script/angular.min.js"></script>
+</head>
+<body>
+<div ng-app="myapp">
+<div class="form-group">
+    <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
+    <div class="input-group">
+        <div class="input-group-addon">
+            <span class="glyphicon glyphicon-search"></span>
+        </div>
+        <input type="text" class="form-control" id="exampleInputAmount" placeholder="Search" ng-model="seach">
+    </div>
+</div>
+
+<table class="table text-center" ng-controller="contro">
+    <tr>
+        <th class="text-center">种类</th>
+        <th class="text-center">数量</th>
+        <th class="text-center">价格</th>
+        <th class="text-center">总价</th>
+        <th class="text-center">操作</th>
+    </tr>
+    <tr>
+        <td colspan="5" ng-show="data.length==0">
+            购物车为空
+        </td>
+    </tr>
+    <tr ng-repeat="item in data | filter:{name:seach}">
+        <td>{{item.name}}</td>
+        <td>
+            <form class="form-inline">
+                <div class="form-group">
+                    <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
+                    <div class="input-group">
+                        <div class="input-group-addon" ng-click="jian(item.id)">-</div>
+                        <input type="text" class="form-control"  value="{{item.nums}}" ng-model="item.nums">
+                        <div class="input-group-addon" ng-click="jia(item.id)">+</div>
+                    </div>
+                </div>
+            </form>
+        </td>
+        <td>{{item.prices}}</td>
+        <td>{{item.prices*item.nums}}</td>
+        <td>
+            <button class="btn btn-danger" type="submit" ng-click="del(item.id)">删除</button>
+        </td>
+    </tr>
+    <tr ng-hide="data.length==0">
+        <td>总数量</td>
+        <td>{{getnums()}}</td>
+        <td>总价格</td>
+        <td>{{getprices()}}</td>
+        <td>
+            <button class="btn btn-danger" type="submit" ng-click="clear()">清空</button>
+        </td>
+    </tr>
+</table>
+</div>
+</body>
+<script>
+    angular.module("myapp",[]).controller("contro",["$scope",function($scope){
+        $scope.data=[
+            {id:1,name:"衣服",prices:100,nums:2},
+            {id:2,name:"袜子",prices:10,nums:4},
+            {id:3,name:"裤子",prices:100,nums:1},
+            {id:4,name:"饮料",prices:5,nums:2},
+            {id:5,name:"手机",prices:2000,nums:1},
+            {id:6,name:"电脑",prices:5000,nums:1}
+        ];
+
+        $scope.search="";
+        $scope.getnums=function(){
+            var nums=0;
+            $scope.data.forEach(function(val,index){
+                nums+=val.nums;
+                if(parseInt(val.nums)>0&&parseInt(val.nums)){
+                    val.nums=parseInt(val.nums)
+                }else{
+                    val.nums=0;
+                }
+//                console.log(nums)
+            })
+            return nums;
+        }
+
+//        $scope.$watch("data",function(news,old){
+//
+//        },true)
+
+        $scope.getprices=function(){
+            var prices=0;
+            $scope.data.forEach(function(val,index){
+                prices+=val.prices*val.nums;
+//                console.log(prices)
+            })
+            return prices;
+        }
+
+        $scope.del=function(id){
+            $scope.data.forEach(function(val,index){
+                if(id===val.id){
+                    $scope.data.splice(index,1)
+                }
+            })
+        }
+
+        $scope.clear=function(){
+            $scope.data=[];
+        }
+
+        $scope.jia=function(id){
+            $scope.data.forEach(function(val,index){
+                if(id==val.id){
+                    val.nums++;
+                }
+            })
+        }
+
+        $scope.jian=function(id){
+            $scope.data.forEach(function(val,index){
+                if(id==val.id){
+                    val.nums--;
+                }
+            })
+        }
+
+    }])
+</script>
+</html>
