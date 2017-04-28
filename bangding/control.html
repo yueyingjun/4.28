@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="js/angular.min.js"></script>
+</head>
+<body>
+    <div ng-app="myapp">
+        <div ng-controller="control">
+            <input type="text" ng-model="aa">
+            <!--ng-model="保存的变量名" 表单特殊用法-->
+            <input type="text" ng-model="aa">
+        </div>
+
+    </div>
+</body>
+<script>
+    angular.module("myapp",[])
+        .controller("control",function ($scope) {
+            console.log($scope);
+            $scope.aa=30;
+        })
+</script>
+</html>

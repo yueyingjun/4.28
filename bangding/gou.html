@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/angular.min.js"></script>
+</head>
+<body ng-app="car">
+    <div  ng-controller="control">
+        <div class="form-group">
+            <div class="input-group" style="width: 100%">
+                <div class="input-group-addon">
+                   <span class="glyphicon glyphicon-search"></span>
+                </div>
+                <input type="text" class="form-control"  placeholder="search" ng-model="search">
+            </div>
+        </div>
+        <table class="table table-bordered" style="table-layout: fixed">
+            <tr>
+                <th>名称</th>
+                <th>价格</th>
+                <th>数量</th>
+                <th>总价</th>
+                <th>操作</th>
+            </tr>
+            <tr>
+                <td colspan="5" class="text-center" ng-show="data.length==0">
+                    购物车为空
+                </td>
+            </tr>
+            <tr ng-repeat="item in data| filter:{name:search}" ng-hide="data.length==0">
+                <!--ng-repeate 循环data，每次循环的数据是item-->
+                <td>{{item.name}}</td>
+                <td>{{item.price}}</td>
+                <td>
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
+                            <div class="input-group">
+                                <div class="input-group-addon" ng-click="jia(item.id)">+</div>
+                                <input type="text" class="form-control" id="exampleInputAmount" placeholder="num" ng-model="item.num">
+                                <div class="input-group-addon"  ng-click="jian(item.id)">-</div>
+                            </div>
+                        </div>
+                    </form>
+                </td>
+                <td>{{item.price*item.num}}</td>
+                <td>
+                    <button class="btn btn-danger" type="submit" ng-click="del(item.id)">删除</button>
+                </td>
+            </tr>
+            <tr ng-hide="data.length==0">
+                <td>总数量</td>
+                <td>{{getNum()}}</td>
+                <td>总价格</td>
+                <td>{{getPrice()}}</td>
+                <td>
+                    <button class="btn btn-danger" type="submit" ng-click="clear()">清空购物车</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+<script>
+    angular.module("car",[])
+        .controller("control",["$scope",function ($scope) {
+            $scope.data=[
+                {id:1,name:"衣服",price:100,num:1},
+                {id:2,name:"裤子",price:150,num:2},
+                {id:3,name:"鞋子",price:60,num:5},
+            ]
+
+            //监听数量发生改变
+            //获取总数，主要数量改变就会调用这个函数
+            $scope.getNum=function () {
+                var num=0;
+                $scope.data.forEach(function(val,index){
+                    var newnum=parseInt(val.num);
+                    if(newnum>0&&newnum){
+                        val.num=newnum;
+                    }else{
+                        val.num=0;
+                    }
+                    num+=val.num;
+                })
+                return num;
+            }
+
+            //总价格
+            $scope.getPrice=function () {
+                var price=0;
+                $scope.data.forEach(function(val,index){
+                    price+=val.price*val.num;
+                })
+                return price;
+            }
+
+            //每行的删除
+            $scope.del=function (id) {
+                $scope.data.forEach(function(val,index){
+                    if(val.id===id){
+                        $scope.data.splice(index,1);
+                    }
+                })
+            }
+
+            //清空购物车
+            $scope.clear=function () {
+                $scope.data=[];
+                //清空让所有数据直接等于空
+            }
+
+            //加
+            $scope.jia=function (id) {
+                $scope.data.forEach(function(val,index){
+                    if(val.id===id){
+                        val.num++;
+                    }
+                })
+            }
+
+            //减
+            $scope.jian=function (id) {
+                $scope.data.forEach(function(val,index){
+                    if(val.id===id){
+                        val.num--;
+                    }
+                })
+            }
+
+
+
+        }])
+</script>
+</html>
