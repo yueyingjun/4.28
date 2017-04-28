@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<script src="script/angular.min.js"></script>
+	<style type="text/css">
+		table{
+			width: 500px;
+		}
+		th{
+			text-align: center;
+		}
+		.forms-inlines{
+			width: 200px;
+		}
+		td{
+			text-align: -webkit-center;
+		}
+	</style>
+	<body ng-app="myapp">
+		<div ng-controller="car">
+			<div class="form-group">
+				<label for="exampleInputAmount" class="sr-only">Amount(in dollars)</label>
+				<div class="input-group">
+					<div class="input-group-addon"><span class="glyphicon glyphicon-search"></span></div>
+					<input type="text" class="form-control" id="exampleInputAmount" placeholder="search" ng-model="search">
+				</div>
+			</div>
+		
+		
+			<table class="table table-bordered text-center">
+			<tr>
+				<th>名称</th>
+				<th>价格</th>
+				<th>数量</th>
+				<th>总价</th>
+				<th>操作</th>
+			</tr>
+			<tr ng-show="data.length==0">
+				<td colspan="5">购物车已空！</td>
+			</tr>
+			<tr ng-repeat="item in data | filter:{name:search}" ng-hidden="data.length==0">
+				<td>{{item.name}}</td>
+				<td>{{item.price}}</td>
+				<td>
+					<form class="forms-inlines">
+						<div class="form-group">
+							<label for="exampleInputAmount" class="sr-only"></label>
+							<div class="input-group">
+								<div class="input-group-addon" ng-click="jian(item.id)">-</div>
+								<input type="text" class="form-control" id="exampleInputAmount" ng-model="item.num">
+								<div class="input-group-addon" ng-click="jia(item.id)">+</div>
+							</div>
+						</div>
+					</form>
+				</td>
+				<td>{{item.num*item.price}}</td>
+				<td>
+					<button class="btn btn-danger" type="submit" ng-click="del(item.id)">删除</button>
+				</td>
+			</tr>
+			<tr>
+				<td>总数量</td>
+				<td>{{getNums()}}</td>
+				<td>总价</td>
+				<td>{{getPrice()}}</td>
+				<td><button class="btn btn-danger" type="submit" ng-click="clear()">清空购物车</button></td>
+			</tr>
+		</table>
+		</div>
+	</body>
+<script>
+    angular.module("myapp",[]).controller("car",["$scope",function($scope){
+    	$scope.search="";
+    	$scope.data=[
+    	{id:1,name:"衣服",price:100,num:2},
+    	{id:2,name:"裤子",price:70,num:2},
+    	{id:3,name:"鞋子",price:150,num:3},
+    	{id:4,name:"帽子",price:20,num:2},
+    	{id:5,name:"丝巾",price:70,num:6},
+    	];
+    	$scope.getNums=function(){
+    		var nums=0;
+    		$scope.data.forEach(function(val,index){
+    			var num=val.num;
+    			if(parseInt(num)>0&&parseInt(num)){
+    				nums+=parseInt(num);
+    				val.num=parseInt(num);
+    			}else{
+    				val.num=0;
+    			}
+    		})
+    		return nums;
+    	}
+    	$scope.getPrice=function(){
+    		var prices=0;
+    		$scope.data.forEach(function(val,index){
+    			prices+=val.num*val.price;
+    		})
+    		return prices;
+    	}
+    	$scope.del=function(id){
+    		$scope.data.forEach(function(val,index){
+    			if(id==val.id){
+    				$scope.data.splice(index,1);
+    			}
+    		})
+    	}
+    	$scope.clear=function(){
+    		$scope.data=[];
+    	}
+    	//监听
+    	$scope.$watch("data",function(old,news){
+    		console.log(old);
+    		console.log(news);
+    	},true)
+    	$scope.jian=function(id){
+    		$scope.data.forEach(function(val,index){
+    			if(id==val.id){
+    				val.num--;
+    			}
+    		})
+    	}
+    	$scope.jia=function(id){
+    		$scope.data.forEach(function(val,index){
+    			if(id==val.id){
+    				val.num++;
+    			}
+    		})
+    	}
+    	
+    	
+    }])
+	
+	
+	
+</script>
+</html>
+
+<!--脏值检测      认为总是表里不一的-->
