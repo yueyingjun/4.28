@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="angular/angular.min.js"></script>
+</head>
+<body ng-app="myapp">
+    <div ng-controller="control">
+        <!--{{aa}}  angularjs自带模板引擎，两个花括号&ndash;&gt;-->
+        <!--将数据反馈到视图中-->
+        <input type="text" ng-model="aa">
+        <input type="text" ng-model="aa">
+    </div>
+</body>
+<script>
+    //依赖注入
+    angular.module("myapp",[])  //启动管理
+        .controller("control",[$scope,function ($scope) {  //参数依赖注入，固定值,控制器的数据都存放在$scope
+            console.log($scope)
+            $scope.aa=10;
+        }])  //控制器：将相应的数据放到相应的视图当中
+</script>
+</html>

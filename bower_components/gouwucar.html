@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>购物车</title>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <script src="angular/angular.min.js"></script>
+</head>
+<body ng-app="myapp">
+<div class="input-group">
+    <span class="input-group-addon" id="basic-addon1" >搜索</span>
+    <input type="text" class="form-control" placeholder="search" aria-describedby="basic-addon1" ng-model="search">
+</div>
+<table class="table text-center table-bordered" ng-controller="control">
+    <tr>
+        <th class="text-center">名称</th>
+        <th class="text-center">价格</th>
+        <th class="text-center">数量</th>
+        <th class="text-center">总价</th>
+        <th class="text-center">操作</th>
+    </tr>
+    <tr ng-show="data.length==0">
+        <td colspan="5">
+            购物车是空的
+        </td>
+    </tr>
+    <tr ng-repeat="x in data| filter:{name:search}" ng-hide="data.length==0">
+        <th class="text-center">{{x.name}}</th>
+        <th class="text-center" ng-model="price">{{x.price}}</th>
+        <th class="text-center"><form class="form-inline">
+            <div class="form-group">
+                <label class="sr-only" for="exampleInputAmount">1</label>
+                <div class="input-group">
+                    <div class="input-group-addon" ng-click="x.num = x.num*1 - 1">-</div>
+                    <input type="text" class="form-control" id="exampleInputAmount" placeholder="num" ng-model="x.num">
+                    <div class="input-group-addon"  ng-click="x.num = x.num*1 +1">+</div>
+                </div>
+            </div>
+        </form></th>
+        <th class="text-center">{{x.price*x.num}}</th>
+        <th class="text-center" ng-click="del(x.id)"><button type="button" class="btn btn-danger">删除</button></th>
+    </tr>
+    <tr ng-hide="data.length==0">
+        <td class="text-center" colspan="2">总数量：{{totle()}}</td>
+        <td class="text-center" colspan="2">总价格：{{price()}}</td>
+        <td class="text-center" ng-click="clear()"><button type="button" class="btn btn-danger">清空购物车</button></td>
+    </tr>
+</table>
+</body>
+<script>
+    angular.module("myapp",[])
+        .controller("control",function ($scope) {
+            $scope.data=[
+            {name:"衣服",price:100,num:2,id:1},
+            {name:"裤子",price:200,num:1,id:2},
+            {name:"电脑",price:4000,num:1,id:3},
+            {name:"袜子",price:3,num:5,id:3}
+            ]
+            $scope.del=function (id) {
+                $scope.data.forEach(function (val,index) {
+                    if(id===val.id){
+                        $scope.data.splice(index,1)
+                    }
+                })
+            }
+            $scope.totle=function () {
+                var nums=0;
+                angular.forEach($scope.data,function (data,index,array) {
+                    var nnum=array[index].num*1;
+                    if(parseInt(nnum)>0&&parseInt(nnum)){
+                        nums+=nnum
+                    }else {
+                        array[index].num=0;
+                    }
+                })
+                return nums;
+            }
+            $scope.price=function () {
+                var prices=0;
+                $scope.data.forEach(function (data,index) {
+                    prices+=data.num*data.price
+                })
+                return prices;
+            }
+            $scope.clear=function () {
+                $scope.data=[];
+            }
+            $scope.$watch("data",function (old,news) {  //监听变化//脏值检测
+
+            },true)
+        })
+</script>
+</html>
