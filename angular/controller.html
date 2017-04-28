@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="script/angular.min.js"></script>
+</head>
+<body ng-app="myapp">
+    <input type="text" ng-model="aa">
+    <input type="text" ng-model="aa">
+</body>
+<script>
+    angular.module("myapp",[]).controller("control",["$scrope"],function (a) {
+       a.aa=10;
+    })
+</script>
+</html>
