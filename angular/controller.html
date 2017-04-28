@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="script/angular.min.js"></script>
+</head>
+<body>
+<div ng-app="myapp">
+   <div ng-controller="control">
+       <input type="text" ng-model="aa">
+      <span ng-bind="aa"></span>
+       {{aa}}
+       <!--angular.js的一个模板引擎{{}}-->
+   </div>
+</div>
+</body>
+<script>
+    angular.module("myapp",[])//[]代表依赖注入 手动启动
+        .controller("control",function($scope){//$scope不能改掉，依赖注入 这个控制器所作用的范围
+            $scope.aa=10;
+        });
+</script>
+</html>

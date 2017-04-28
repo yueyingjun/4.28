@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="script/angular.min.js"></script>
+</head>
+npm node.js（后台）的包管理工具  bower 前端JavaScript的包管理工具
+数据不一定要存在数据库中 MVVM（angular的编程模式）
+双向数据绑定:当视图与数据中同时存在某个值才会发生双向数据绑定，否则手动检测（通过脏值检测）双向数据绑定
+脏值检测：脏值：总是变化的，总会把一个值存两份，
+控制器：将相应的数据放到相应的视图中 node php 路由实现
+
+<body ng-app ng-init="a=0;b=0">
+<input type="text" ng-model="a">
++
+<input type="text" ng-model="b">
+=
+<span>{{a*1+b*1}}</span>
+</body>
+</html>
