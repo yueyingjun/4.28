@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script src="script/angular.min.js"></script>
+<body ng-app="myapp">      <!--启动应用-->
+   <div ng-controller="control">
+   	<!--{{aa}}-->
+   	<input type="text" ng-model="aa"/>
+   	<input type="text" ng-model="aa"/>
+   </div>
+</body>
+<script>
+//    依赖注入
+//    控制器：将相应的数据放入相应的视图当中
+//    mvc    是一种思路
+//    control对应上面的control内容
+//    参数必须是$scope(区间，范围)
+//    模板  {{  }}
+    angular.module("myapp",[]).controller("control",function ($scope) {
+        $scope.aa=10;
+//      $scope.bb=20;
+    });
+</script>
+</html>
