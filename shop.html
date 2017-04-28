@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>购物车</title>
+    <script src="script/angular.min.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+<body>
+<div ng-app="myapp" ng-controller="shop">
+    <table class="table table-striped">
+        <div class="form-group has-success has-feedback">
+            <label class="control-label" for="inputGroupSuccess3"></label>
+            <div class="input-group">
+                <span class="input-group-addon" >搜索</span>
+                <input type="text" ng-model="search" class="form-control" id="inputGroupSuccess3" aria-describedby="inputGroupSuccess3Status">
+
+            </div>
+            <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+            <span id="inputGroupSuccess3Status" class="sr-only">(success)</span>
+        </div>
+        <tr>
+            <th>#</th>
+            <th>商品名</th>
+            <th>商品价格</th>
+            <th>商品数量</th>
+            <th>商品总价</th>
+            <th>操作</th>
+        </tr>
+        <tr ng-show="data.length==0">
+            <td colspan="5">购物车是空的</td>
+        </tr>
+        <tr ng-repeat="goods in data|filter:{name:search}" ng-hide="data.length==0">
+            <td>{{goods.id}}</td>
+            <td>{{goods.name}}</td>
+            <td>{{goods.price}}</td>
+            <td>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-addon" ng-click="jian(goods.id)">－</div>
+                        <input type="text" ng-model="goods.num" class="form-control" id="exampleInputAmount" value="{{goods.num}}">
+                        <div class="input-group-addon" ng-click="jia(goods.id)">+</div>
+                    </div>
+                </div>
+            </td>
+            <td>{{goods.price*goods.num}}</td>
+            <td><a href="" ng-click="delete($index)">删除</a></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td>总计金额:{{all()}}</td>
+            <td>总数:{{fei()}}</td>
+            <td>实际金额:{{total()}}</td>
+            <td><a href="" ng-click="del($index)">清空购物车</a></td>
+        </tr>
+    </table>
+
+</div>
+</body>
+<script>
+    angular.module("myapp",[]).controller("shop",["$scope",function (scope) {
+        scope.data=[
+            {id:1,name:"衣服",price:100,num:2},
+            {id:2,name:"日用品",price:150,num:3},
+            {id:3,name:"玩具",price:50,num:1},
+            {id:4,name:"手机",price:1000,num:2}
+        ];
+        scope.all=function () {
+            var all=0;
+            scope.data.forEach(function (val,index) {
+                all+=val.price;
+            })
+            return all;
+        };
+        scope.fei=function () {
+            var fei=0;
+            scope.data.forEach(function (val,index) {
+                fei+=val.num;
+            })
+            return fei;
+        };
+        scope.total=function () {
+            var total=0;
+            scope.data.forEach(function (val,index) {
+                total+=val.num*val.price;
+            })
+            return total;
+        };
+        scope.delete=function ($index) {
+            scope.data.splice($index,1)
+        }
+
+        scope.del=function ($index) {
+            scope.data=[];
+        }
+
+        scope.jia=function (id) {
+            scope.data.forEach(function (val,index) {
+                if(id==val.id){
+                    val.num++;
+                }
+            });
+        };
+        scope.jian=function (id) {
+            scope.data.forEach(function (val,index) {
+                if(id==val.id){
+                    val.num--;
+                }
+            });
+        }
+
+    }])
+</script>
+</html>
