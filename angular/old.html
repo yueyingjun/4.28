@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script>
+        window.onload=function () {
+            var one=document.querySelectorAll("input")[0];
+            var two=document.querySelectorAll("input")[1];
+            var three=document.querySelectorAll("input")[2];
+
+            one.oninput=function () {
+                var val=parseFloat(one.value)?parseFloat(one.value):0;
+                three.value=val*1+two.value*1;
+            }
+            two.oninput=function () {
+                var val=parseFloat(two.value)?parseFloat(two.value):0;
+                three.value=val*1+one.value*1;
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <input type="text" value="0">
+    +
+    <input type="text" value="0">
+    =
+    <input type="text" value="0">
+</body>
+</html>
