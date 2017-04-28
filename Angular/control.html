@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="script/angular.min.js"></script>
+</head>
+
+<script>
+
+</script>
+
+<body ng-app="myapp"><!--ng-app表示这之下的东西归angular管-->
+
+    <div ng-controller="control"><!--相应的视图-->
+        {{aa}}
+        <input type="text" ng-model="aa">
+        <input type="text" ng-model="aa">
+    </div>
+
+</body>
+<script>
+    angular.module("myapp",[])//手动启动自定义的angular应用  []为依赖注入
+        .controller("control",["$scope",function (a) {//控制器 将相应的数据放到相应的视图   $scope不能改变，代表control作用的范围
+            a.aa=20;//数据放到scope上
+        }])
+</script>
+</html>
