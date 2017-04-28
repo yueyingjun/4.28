@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/angular.min.js"></script>
+    <style>
+        .table tr td, .table tr th {
+            text-align: center;
+        }
+        td{
+            font-size: 20px;
+        }
+        .car-red{
+            color: red;
+            font-size: 30px;
+        }
+        .success,.info,.warning{
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body ng-app="myapp">
+<div ng-controller="control">
+    <div class="input-group">
+        <span class="input-group-addon glyphicon glyphicon-search"></span>
+        <input type="text" class="form-control" id="inputGroupSuccess1" aria-describedby="inputGroupSuccess1Status" placeholder="请输入商品名称" ng-model="search">
+    </div>
+    <table class="table text-center table table-striped">
+        <tr>
+            <th class="warning">商品名称</th>
+            <th class="warning">商品价格</th>
+            <th class="warning">商品数量</th>
+            <th class="warning">商品总价</th>
+            <th class="warning">操作</th>
+        </tr>
+        <tr ng-show="data.length==0">
+            <td colspan="5" class="car-red">
+                钱包满的，购物车却空了!
+            </td>
+        </tr>
+        <tr ng-repeat="item in data | filter:{name:search}" ng-hide="data.length==0">
+            <td>{{item.name}}</td>
+            <td>{{item.price}}</td>
+            <td>
+                <form class="form-inline">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon" ng-click="jian(item.id)"> - </div>
+                            <input type="text" class="form-control text-center"  placeholder="num" ng-model="item.num">
+                            <div class="input-group-addon" ng-click="jia(item.id)"> + </div>
+                        </div>
+                    </div>
+                </form>
+            </td>
+            <td>{{item.price*item.num}}</td>
+            <td>
+                <button type="button" class="btn btn-danger" ng-click="del(item.id)">删除</button>
+            </td>
+        </tr>
+        <tr>
+            <td class="success">总件数</td>
+            <td class="info">{{getNum()}}件</td>
+            <td class="success">结算</td>
+            <td class="info">{{getPrice()}}元</td>
+            <td class="success">
+                <button type="button" class="btn btn-danger" ng-click="clear()">清空购物车</button>
+                <button type="button" class="btn btn-success" ng-click="clear()">一键支付</button>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+<script>
+    angular.module("myapp",[]).controller("control",['$scope',function ($scope) {
+        $scope.data=[
+            {
+                id:1,
+                name:"冲锋衣",
+                price:500,
+                num:1
+            },
+            {
+                id:2,
+                name:"登山鞋",
+                price:300,
+                num:2
+            },
+            {
+                id:3,
+                name:"帐篷",
+                price:150,
+                num:1
+            },
+            {
+                id:4,
+                name:"皮肤衣",
+                price:400,
+                num:1
+            }
+        ];
+
+        $scope.search='';
+        $scope.getNum=function () {
+            var nums=0;
+            $scope.data.forEach(function (val,index) {
+                var num=val.num;
+                if(parseInt(num)>0&&parseInt(num)){
+                    nums+=parseInt(num);
+                    val.num=parseInt(num);
+                }else{
+                    val.num=0;
+                }
+            })
+            return nums;
+        };
+        $scope.jia=function (id) {
+            $scope.data.forEach(function (val,index) {
+                if(id==val.id){
+                    val.num++;
+                }
+            })
+        };
+        $scope.jian=function (id) {
+            $scope.data.forEach(function (val,index) {
+                if(id==val.id){
+                    val.num--;
+                }
+            })
+        };
+        $scope.getPrice=function () {
+            var prices=0;
+            $scope.data.forEach(function (val,index) {
+                prices+=val.num*val.price;
+            });
+            return prices;
+        };
+        $scope.del=function (id) {
+            $scope.data.forEach(function (val,index) {
+                if(id==val.id){
+                    $scope.data.splice(index,1);
+                }
+            })
+        };
+        $scope.clear=function () {
+            $scope.data=[];
+        }
+    }]);
+</script>
+</html>
