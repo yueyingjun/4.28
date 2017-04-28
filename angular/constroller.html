@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="script/angular.min.js"></script>
+</head>
+<body ng-app="myapp">
+   <div ng-controller="control">
+       <input type="text" ng-model="aa">
+       <input type="text" ng-model="aa">
+   </div>
+</body>
+</html>
+<script>
+    <!--[]依赖注入 手动启动-->
+    angular.module("myapp",[])
+        .controller("control",function ($scope) {    //形参必须是这个$sconpe依赖注入 表示该控制器的控制区间
+//            console.log($scope);
+            $scope.aa=6;    //把数据放入scope
+        })
+</script>
