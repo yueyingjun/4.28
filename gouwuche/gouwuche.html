@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <script src="../angular.min.js"></script>
+</head>
+<form class="form-inline">
+    <div class="form-group">
+        <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
+        <div class="input-group">
+            <div class="input-group-addon">搜索</div>
+            <input type="text" class="form-control" id="exampleInputAmount" placeholder="Amount" ng-model="search">
+            <div class="input-group-addon"></div>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Transfer cash</button>
+</form>
+<body ng-app="myapp">
+<table class="table table-hover" ng-controller="car">
+    <tr>
+        <th class="table-hover">名称</th>
+        <th class="table-hover">价格</th>
+        <th class="table-hover">数量</th>
+        <th class="table-hover">总价</th>
+        <th class="table-hover">操作</th>
+    </tr>
+    <tr ng-show="data-length==0">
+        <td>购物车为空</td>
+    </tr>
+    <tr ng-repeat="item in data" ng-show="data.length>0">
+        <td >{{item.name}}</td>
+        <td>{{item.price}}</td>
+        <td>
+            <form class="form-inline" style="width:150px;">
+                <div class="form-group">
+                    <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
+                    <div class="input-group">
+                        <div class="input-group-addon" ng-click="jian(item.id)">-</div>
+                        <input type="text" class="form-control" id="exampleInputAmount" ng-model="item.num">
+                        <div class="input-group-addon" ng-click="jia(item.id)">+</div>
+                    </div>
+                </div>
+            </form>
+        <td>{{item.num*item.price}}</td>
+        <td ng-click="del(item.id)" style="cursor: pointer">删除</td>
+    </tr>
+    <tr>
+        <td>总数量</td>
+        <td>{{getNums()}}</td>
+        <td>总价格</td>
+        <td>{{getPrices()}}</td>
+        <td ng-click="all()">清空购物车</td>
+    </tr>
+
+</table>
+</body>
+<script>
+    angular.module("myapp",[]).controller("car",function($scope){
+        $scope.data=[
+            {name:"衣服",price:249,num:1,id:1},
+            {name:"裤子",price:139,num:2,id:2},
+            {name:"鞋子",price:199,num:1,id:3},
+            {name:"袜子",price:18,num:3,id:4},
+            {name:"帽子",price:58,num:1,id:5},
+            {name:"背包",price:108,num:1,id:6}
+        ];
+        $scope.getNums=function(){
+            var nums=0;
+            $scope.data.forEach(function(val,index){
+                var num=val.num;
+                if(parseInt(num)>0&&parseInt(num)){
+                    nums+=parseInt(num);
+                }
+            });
+            return nums;
+        };
+        $scope.getPrices=function(){
+            var nums=0;
+            $scope.data.forEach(function(val,index){
+                nums+=val.num*val.price;
+                console.log(nums);
+            });
+            return nums;
+        };
+        $scope.del=function(id){
+            $scope.data.forEach(function(val,index){
+                if(id==val.id){
+                    $scope.data.splice(index,1);
+                }
+            });
+        };
+        $scope.jian=function (id) {
+            $scope.data.forEach(function (val,index) {
+                if(val.id==id){
+                    val.num--;
+                    if(val.num<0){
+                        val.num=0;
+                    }
+                }
+            })
+        };
+        $scope.jia=function (id) {
+            $scope.data.forEach(function (val,index) {
+                if(val.id==id){
+                    val.num++;
+                }
+            })
+        };
+        $scope.all=function () {
+            $scope.data=[];
+        }
+    })
+</script>
+</html>
