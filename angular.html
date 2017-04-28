@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="fonts/glyphicons-halflings-regular.ttf">
+</head>
+<script src="angular/angular.min.js"></script>
+<body>
+<!--<input type="text" ng-model="a">-->
+<!--+-->
+<!--<input type="text" ng-model="b">-->
+<!--=-->
+<!--<span>{{a*1+b*1}}</span>-->
+    <!--<div ng-controller="controller">-->
+        <!--<input type="text" ng-model="aa">-->
+        <!--<input type="text" ng-model="aa">-->
+    <!--</div>-->
+<!--<script>-->
+    <!--angular.module("myapp",[])-->
+        <!--.controller("controller",["$scope",function ($scope) {-->
+            <!--$scope.aa=10;-->
+        <!--}])-->
+<!--</script>-->
+<div ng-app="myapp" ng-controller="contro">
+
+
+<table class="table table-bordered text-center">
+    <tr>
+        <td colspan="5">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-1 control-label">搜索</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="inputEmail3" placeholder="search" ng-model="sousuo" >
+                    </div>
+                </div>
+            </form>
+        </td>
+    </tr>
+    <tr>
+        <th class="text-center">类型</th>
+        <th class="text-center">单价</th>
+        <th class="text-center">数量</th>
+        <th class="text-center">总价</th>
+        <th class="text-center">操作</th>
+
+    </tr>
+    <tr ng-show="data.length==0">
+        <td colspan="5">购物车空</td>
+    </tr>
+    <tr ng-repeat="item in data | filter:{name:sousuo}" ng-hide="data.length==0">
+        <td>{{item.name}}</td>
+        <td>{{item.price}}</td>
+        <td>
+            <form class="form-inline">
+                <div class="form-group">
+                    <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
+                    <div class="input-group">
+                        <div class="input-group-addon" ng-click="numCut(item.id)">-</div>
+                        <input type="text" class="form-control" id="exampleInputAmount" placeholder="{{item.num}}" ng-model="item.num">
+                        <div class="input-group-addon" ng-click="numAdd(item.id)">+</div>
+                    </div>
+                </div>
+            </form>
+        </td>
+        <td>{{item.price*item.num}}</td>
+        <td><button type="button" class="btn btn-danger" ng-click="del(item.id)">删除</button></td>
+    </tr>
+    <tr>
+        <td class="text-center">总数</td>
+        <td class="text-center">{{getNum()}}</td>
+        <td class="text-center">总价格</td>
+        <td class="text-center">{{getPrice()}}</td>
+        <td class="text-center"><button type="button" class="btn btn-danger" ng-click="clear(item.id)">清空购物车</button></td>
+
+    </tr>
+</table>
+</div>
+<script>
+    angular.module("myapp",[])
+        .controller("contro",["$scope",function ($scope) {
+            $scope.data=[
+                {id:1,"name":"上衣","price":300,num:5},
+                {id:2,"name":"裤子","price":100,num:5},
+                {id:3,"name":"鞋子","price":500,num:5},
+                {id:4,"name":"玩具","price":200,num:5},
+                {id:5,"name":"电脑","price":2000,num:5}
+            ];
+            $scope.getNum=function(){
+                var num=0;
+                $scope.data.forEach(function(val,index){
+                    if(parseInt(val.num)&&parseInt(val.num)>0){
+                        num+=parseInt(val.num);
+                        val.num=parseInt(val.num);
+                    }else{
+                        val.num=0;
+                    }
+                })
+                return num;
+            }
+            $scope.getPrice=function(){
+                var num=0;
+                $scope.data.forEach(function(val,index){
+                    num+=val.num*val.price;
+                })
+                return num;
+            }
+            $scope.del=function(id){
+                $scope.data.forEach(function(val,index){
+                    if(id==val.id){
+                        $scope.data.splice(index,1)
+                    }
+                })
+            }
+            $scope.clear=function(id){
+                $scope.data=[];
+            }
+            $scope.numCut=function(id){
+                $scope.data.forEach(function(val,index){
+                    if(id==val.id){
+                        if(val.num==1) {
+                            $scope.del(val.id);
+                        }else{
+                            val.num=val.num-1;
+                        }
+                    }
+                })
+            }
+            $scope.numAdd=function(id) {
+                $scope.data.forEach(function (val, index) {
+                    if (id == val.id) {
+                        val.num++;
+                    }
+                })
+            }
+        }])
+</script>
+
+
+</body>
+
+</html>
