@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>title</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="script/angular.min.js"></script>
+    <style>
+        .box{
+            width:1000px;
+            margin:50px auto;
+        }
+    </style>
+</head>
+<body ng-app="myapp" >
+
+<div ng-controller="car" class="box" >
+
+    <div class="row" >
+        <div class="col-lg-6">
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button">
+                        搜索
+                    </button>
+                </span>
+                <input type="text" class="form-control" placeholder="Search for..."  ng-model="searchText">
+            </div><!-- /input-group -->
+        </div><!-- /.col-lg-6 -->
+    </div><!-- /.row -->
+
+
+<table class="table table-bordered text-center">
+
+    <thead>
+    <!--ng-repeat="item in data"  循环-->
+    <tr>
+        <th class="text-center">名称</th>
+        <th class="text-center">价格</th>
+        <th class="text-center">数量</th>
+        <th class="text-center">总价</th>
+        <th class="text-center">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-show="data.length==0">
+        <td colspan="5">购物车为空</td>
+    </tr>
+    <!--filter 筛选 {筛选字符:输入框值}-->
+    <tr  ng-repeat="item in data | filter:{type:searchText}" ng-hide="data.length==0">
+        <td>{{item.type}}</td>
+        <td>{{item.price}}</td>
+        <td>
+            <form class="form-inline">
+                <div class="form-group">
+                    <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
+                    <div class="input-group">
+                        <div class="input-group-addon" ng-click="jian(item.id)">-</div>
+                        <input type="text" class="form-control" id="exampleInputAmount" placeholder="Amount" ng-model="item.num" />
+                        <div class="input-group-addon" ng-click="jia(item.id)">+</div>
+                    </div>
+                </div>
+                <!--<button type="submit" class="btn btn-primary">Transfer cash</button>-->
+            </form>
+        </td>
+        <td>{{item.num*item.price}}</td>
+        <td><button type="button" class="btn btn-danger" ng-click="del(item.id)">删除</button></td>
+    </tr>
+    </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="2">总数量</td>
+        <td>{{getNum()}}</td>
+        <td>{{getPrice()}}</td>
+        <td><button type="button" class="btn btn-danger" ng-click="clearCar()">清空购物车</button></td>
+    </tr>
+    </tfoot>
+
+</table>
+
+</div>
+
+<script>
+
+    angular.module("myapp",[]).controller("car",function($scope){
+
+        /*
+
+        $scope上边绑定的数据，在视图中如果做出了改变，那么会自动调用执行
+
+        */
+
+        $scope.searchText="";
+
+        $scope.data=[
+            {id:1,type:"衣服",price:100,num:2},
+            {id:2,type:"裤子",price:80,num:1},
+            {id:3,type:"饮料",price:50,num:3},
+            {id:4,type:"电脑",price:2000,num:1},
+            {id:5,type:"书",price:100,num:1}
+            ];
+
+        // 删除一行
+        // @param $index 传入当前行的id
+        $scope.del=function($index){
+            $scope.data.forEach(function(val,index){
+                if($index==val.id){
+                    $scope.data.splice(index,1);
+                }
+            })
+        };
+
+        // 获取总数量
+        $scope.getNum=function(){
+
+            var num=0;
+            $scope.data.forEach(function(val,index){
+                num+=parseInt(val.num);
+
+                if(val.num==""||!parseInt(val.num)){
+                    val.num=0;
+                }
+
+            });
+
+            return num;
+
+        };
+
+
+        // 获取总价
+        $scope.getPrice=function(){
+            var price=0;
+            $scope.data.forEach(function(val,index){
+                price+=val.price*parseInt(val.num);
+            })
+
+            return price;
+        };
+
+//        $scope.total=$scope.getPrice();
+
+        // 监测指定数据值的改变
+        $scope.$watch(
+            // 设置监测的值
+            "data",
+            // 当值改变的时候触发
+            function(old,news){
+                // 第一个参数表示旧的值，第二个参数表示新的值
+                if(old!=news){
+//                    $scope.total=$scope.getPrice();
+
+                }
+
+            },
+            // true 表示检测引用类型，默认false 检测简单类型
+            true);
+
+
+        // 清空购物车
+        $scope.clearCar=function(){
+            $scope.data=[];
+        }
+
+        // 数量减少
+        $scope.jian=function($index){
+            $scope.data.forEach(function(val,index){
+                if(val.id==$index){
+                    if(val.num>0){
+                        val.num--;
+                    }
+                }
+            })
+        }
+
+        // 数量增加
+        $scope.jia=function($index){
+            $scope.data.forEach(function(val,index){
+                if(val.id==$index){
+                    val.num++;
+                }
+            });
+        }
+
+
+    });
+
+
+
+    /*
+
+    发生双向数据绑定的条件
+
+        视图中运算
+
+
+    */
+</script>
+
+</body>
+</html>
