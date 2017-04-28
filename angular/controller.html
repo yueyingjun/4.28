@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="script/angular.min.js"></script>
+</head>
+<body>
+    <div ng-app="myapp">
+        <div ng-controller="control">
+            <input type="text" ng-model="aa">
+            <input type="text" ng-model="aa">
+        </div>
+    </div>
+</body>
+<script>
+    /*
+     * 依赖注入
+     *
+     * 控制器 将相应的数据放到相应的视图里面
+     *
+     * scope 范围区间
+     * */
+        angular.module("myapp",[]).controller("control",function ($scope) {
+        $scope.aa=100;
+    });
+</script>
+</html>
