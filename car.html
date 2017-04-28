@@ -44,9 +44,9 @@
                 <div class="form-group">
                     <label class="sr-only" for="exampleInputAmount"></label>
                     <div class="input-group">
-                        <div class="input-group-addon">-</div>
+                        <div class="input-group-addon" ng-click="jian(item.id)">-</div>
                         <input type="text" class="form-control" id="exampleInputAmount" placeholder="Amount" ng-model="item.num">
-                        <div class="input-group-addon">+</div>
+                        <div class="input-group-addon" ng-click="jia(item.id)">+</div>
                     </div>
                 </div>
             </form>
@@ -106,8 +106,26 @@
             $scope.clear=function () {
                 $scope.data=[];
             };
-            
+
             $scope.searchText="";
+            $scope.jian=function($index){
+                $scope.data.forEach(function(val,index){
+                    if(val.id==$index){
+                        if(val.num>0){
+                            val.num--;
+                        }
+                    }
+                })
+            }
+            // 数量增加
+            $scope.jia=function($index){
+                $scope.data.forEach(function(val,index){
+                    if(val.id==$index){
+                        val.num++;
+                    }
+                });
+            }
+
 //            $scope.$watch("data",function (old,news) {
 //                console.log(old);
 //                console.log(news);
