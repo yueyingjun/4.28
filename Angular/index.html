@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="script/angular.min.js"></script>
+</head>
+<script>
+//    window.onload=function () {
+//        var one=document.querySelectorAll("input")[0];
+//        var two=document.querySelectorAll("input")[1];
+//        var three=document.querySelectorAll("input")[2];
+////        onchange改掉之后失去焦点才触发
+////        oninput改掉之后就触发
+//        one.oninput=function () {
+//            var oneval=parseFloat(one.value)?parseFloat(one.value):0;
+//            var twoval=parseFloat(two.value)?parseFloat(two.value):0;
+//            three.value=oneval+twoval;
+//        }
+//        two.oninput=function () {
+//            var oneval=parseFloat(one.value)?parseFloat(one.value):0;
+//            var twoval=parseFloat(two.value)?parseFloat(two.value):0;
+//            three.value=oneval+twoval;
+//        }
+//
+//    }
+</script>
+<!--AngularJs 双向数据绑定  model数据  view视图 一个发生变化，另一个跟着变化 MVVM模式
+
+控制器：将相应的数据放到相应的视图里面  路由去实现控制器
+
+
+-->
+<body ng-app ng-init="a=0;b=0">
+<input type="text" ng-model="a">
++
+<input type="text" ng-model="b">
+=
+<span>{{a*1+b*1}}</span>
+
+
+
+
+<!--<input type="text" value="0">-->
+<!--+-->
+<!--<input type="text" value="0">-->
+<!--=-->
+<!--<input type="text" value="0">-->
+</body>
+</html>
