@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>购物车</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <script src="angular.min.js"></script>
+</head>
+<style>
+    td{
+        width:20%;
+    }
+</style>
+<body ng-app="myapp">
+<div style="width:1200px;margin:20px auto" ng-controller="control">
+    <form class="form-inline">
+        <div class="form-group">
+            <div class="input-group">
+                <div class="input-group-addon" ng-click="jian(item.id)">搜索</div>
+                <input type="text" class="form-control" ng-model="search">
+            </div>
+        </div>
+    </form>
+    <p></p>
+    <table class="table table-hover text-center">
+        <tr>
+            <th class="text-center">名称</th>
+            <th class="text-center">价格</th>
+            <th class="text-center">数量</th>
+            <th class="text-center">总价</th>
+            <th class="text-center">操作</th>
+        </tr>
+        <tr ng-show="data.length==0">
+            <td colspan="5">没有物品</td>
+        </tr>
+        <tr ng-repeat="item in data | filter:{name:search}" ng-hide="data.length==0">
+            <td>{{item.name}}</td>
+            <td>{{item.price}}</td>
+            <td>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-addon" ng-click="jian(item.id)"> - </div>
+                        <input type="text" class="form-control" ng-model="item.num" >
+                        <div class="input-group-addon" ng-click="add(item.id)"> + </div>
+                    </div>
+                </div>
+            </td>
+            <td>{{item.num*item.price}}</td>
+            <td>
+                <button type="button" class="btn btn-danger" ng-click="del(item.id)">删除</button>
+            </td>
+        </tr>
+        <tr ng-hide="data.length==0">
+            <th class="text-center">总数</th>
+            <td>{{getNum()}}</td>
+            <th class="text-center">总金额</th>
+            <td colspan="2">{{getPrice()}}</td>
+        </tr>
+    </table>
+</div>
+</body>
+<script>
+    angular.module("myapp",[]).controller("control",["$scope",function(scope){
+        scope.search="";
+        scope.data=[
+            {id:1,name:"衣服",price:100,num:2},
+            {id:2,name:"手机",price:2000,num:1},
+            {id:3,name:"电脑",price:3000,num:1},
+            {id:4,name:"鼠标",price:50,num:1},
+            {id:5,name:"键盘",price:60,num:1}
+        ]
+        scope.getNum=function () {
+            var num=0;
+            scope.data.forEach(function(val,index){
+                if(parseInt(val.num)>0 && parseInt(val.num)){
+                    num+= parseInt(val.num);
+                    val.num=parseInt(val.num);
+                }else{
+                    val.num=1;
+                }
+            })
+            return num;
+        }
+        scope.getPrice=function () {
+            var num=0;
+            scope.data.forEach(function(val,index){
+                if(parseInt(val.num)>0&&parseInt(val.num)) {
+                    num += val.num * val.price;
+                }
+            })
+            return num;
+        }
+
+        scope.del=function(id){
+            scope.data.forEach(function(val,index){
+               if(val.id==id){
+                   scope.data.splice(index,1);
+               }
+            })
+        }
+
+        scope.add=function(id){
+            scope.data.forEach(function(val,index){
+                if(val.id==id){
+                    val.num++;
+                }
+            })
+        }
+
+        scope.jian=function(id){
+            scope.data.forEach(function(val,index){
+                if(val.id==id){
+                    if(val.num==1){
+                       return;
+                    }
+                    val.num--;
+
+                }
+            })
+        }
+
+
+
+    }])
+</script>
+</html>
