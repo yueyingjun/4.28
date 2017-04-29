@@ -123,9 +123,9 @@
                 }
             }
             //减
-            $scope.jian=function ($index) {
+            $scope.jian=function (id) {
                 $scope.data.forEach(function (val,index) {
-                    if(val.id==$index){
+                    if(val.id==id){
                         if(val.num>0){
                             val.num--;
                         }
@@ -134,9 +134,9 @@
                 })
             }
             //加
-            $scope.jia=function ($index) {
+            $scope.jia=function (id) {
                 $scope.data.forEach(function (val,index) {
-                    if(val.id==$index){
+                    if(val.id==id){
                         val.num++;
                     }
                 })
