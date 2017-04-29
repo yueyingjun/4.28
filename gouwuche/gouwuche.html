@@ -9,18 +9,16 @@
     <link rel="stylesheet" href="css/bootstrap.css">
     <script src="../angular.min.js"></script>
 </head>
-<form class="form-inline">
-    <div class="form-group">
-        <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
-        <div class="input-group">
-            <div class="input-group-addon">搜索</div>
-            <input type="text" class="form-control" id="exampleInputAmount" placeholder="Amount" ng-model="search">
-            <div class="input-group-addon"></div>
-        </div>
-    </div>
-    <button type="submit" class="btn btn-primary">Transfer cash</button>
-</form>
 <body ng-app="myapp">
+<div class="form-group">
+    <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
+    <div class="input-group">
+        <div class="input-group-addon">
+            <span>搜索</span>
+        </div>
+        <input type="text" class="form-control" id="exampleInputAmount" placeholder="search" ng-model="search">
+    </div>
+</div>
 <table class="table table-hover" ng-controller="car">
     <tr>
         <th class="table-hover">名称</th>
@@ -32,7 +30,7 @@
     <tr ng-show="data-length==0">
         <td>购物车为空</td>
     </tr>
-    <tr ng-repeat="item in data" ng-show="data.length>0">
+    <tr ng-repeat="item in data | filter:{name:search" ng-show="data.length>0">
         <td >{{item.name}}</td>
         <td>{{item.price}}</td>
         <td>
