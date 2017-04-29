@@ -64,6 +64,9 @@ angular.module("myapp",[]).controller("ctrl",["$scope","$filter",function ($scop
                 $scope.curindex=$scope.data.length-1;
                 $scope.curCon=$scope.data[$scope.curindex];
                 localStorage.data=JSON.stringify($scope.data);
+                if($scope.data.length==0){
+                    $scope.showSel=false;
+                }
 
             }
         })
