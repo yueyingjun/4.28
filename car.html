@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="script/angular.min.js
+"></script>
+    <link rel="stylesheet" href="css/bootstrap.css">
+</head>
+<body ng-app="myapp">
+<div ng-controller="control">
+
+    <div class="form-group">
+        <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
+        <div class="input-group">
+            <div class="input-group-addon">
+                <span>搜索</span>
+            </div>
+            <input type="text" class="form-control" id="exampleInputAmount" placeholder="search" ng-model="search">
+
+        </div>
+    </div>
+
+    <table class="table table-bordered text-center">
+        <tr>
+            <th class="text-center">种类</th>
+            <th class="text-center">数量</th>
+            <th class="text-center">价格</th>
+            <th class="text-center">总价</th>
+            <th class="text-center">操作</th>
+        </tr>
+        <tr ng-show="data.length==0">
+            <td colspan="5">购物车为空，请赶快添加</td>
+
+        </tr>
+
+        <tr ng-repeat="item in data | filter:{name:search}" ng-hide="data.length<0">
+            <td>{{item.name}}</td>
+            <td>
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
+                        <div class="input-group">
+                            <div class="input-group-addon" ng-click="jian(item.id)">-</div>
+                            <input type="text" class="form-control" placeholder="Amount" id="exampleInputAmount" ng-model="item.num">
+                            <div class="input-group-addon" ng-click="jia(item.id)">+</div>
+                        </div>
+                    </div>
+                </form>
+            </td>
+            <td>{{item.price}}</td>
+            <td>{{item.price*item.num}}</td>
+            <td>
+                <button type="button" class="btn btn-danger" ng-click="del(item.id)">删除</button>
+            </td>
+        </tr>
+
+        <tr>
+            <td>总数</td>
+            <td>{{getNum()}}</td>
+            <td>金额</td>
+            <td>{{getMoney()}}</td>
+            <td>
+                <button type="button" class="btn btn-danger" ng-click="clear()">清空回收站</button>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+<script>
+    angular.module("myapp",[]).controller("control",["$scope",function ($a) {
+        $a.search="";
+        $a.data=[
+            {id:1,name:"衣服",price:200,num:3},
+            {id:2,name:"裤子",price:100,num:3},
+            {id:3,name:"内衣",price:250,num:3},
+            {id:4,name:"帽子",price:300,num:3},
+            {id:5,name:"手机",price:2000,num:1}
+            ]
+        $a.getNum=function () {
+            //缺少初始化
+            var nums=0;
+            $a.data.forEach(function (val,index) {
+
+                if(parseInt(val.num)>0&&parseInt(val.num)){
+                    nums+=parseInt(val.num);
+                }else{
+                    val.num=0
+                }
+
+
+            })
+            return nums;
+        }
+        $a.getMoney=function () {
+            var numss=0;
+            $a.data.forEach(function (val,index) {
+                numss+=val.price*val.num;
+                val.num=parseInt(val.num);
+            })
+            return numss;
+        }
+        $a.del=function (id) {
+            $a.data.forEach(function (val,index) {
+                if(id==val.id){
+                    $a.data.splice(index,1);
+                }
+            })
+        }
+        $a.jian=function (id) {
+            $a.data.forEach(function (val,index) {
+                if(id==val.id){
+                    val.num--;
+                    if(val.num<0){
+                        val.num=0;
+                    }
+                }
+            })
+        }
+        $a.jia=function (id) {
+            $a.data.forEach(function (val,index) {
+                if(id==val.id){
+                    val.num++;
+
+                }
+            })
+        }
+        
+        $a.clear=function () {
+            $a.data=[];
+        }
+        $a.$watch("data",function (old,news) {
+            if(old!=news){
+
+            }
+        },true);
+        
+    }])
+</script>
+</html>
