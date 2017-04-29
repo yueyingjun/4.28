@@ -1,0 +1,26 @@
+npm 是node的一个工具管理包
+    npm install angular#1.6.4
+angular用于前端的一个框架
+bower前端工具
+
+双向数据绑定
+    npm install bower
+    bower install angular#1.6.4
+
+    model 数据
+    mvvm   mvc的一种变种
+    angular
+        控制器     将相应的数据放到相应的视图里面  路由去实现控制器
+
+
+    scope:范围区间
+    ng-app  这块内容归angular管
+        ng-app="myapp"  手动启动一下
+            <script>
+            angular.module("myapp",[])  //注入依赖
+                .controller("control",function($scope){
+                    console.log($scope)
+                })//将相应的数据放到相应的视图当中
+            </script>
+
+    脏值检测
