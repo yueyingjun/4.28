@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>$Title$</title>
+    <script src="js/angular.min.js"></script>
+    <!--双向数据绑定  数据库与视图   MVVM编程模式
+    控制器：将相应的数据放到相应的视图当中  有路由去实现控制器
+    那一部分需要管理加ng-app
+    -->
+</head>
+<!--<body ng-app ng-init="a=0;b=0">-->
+<!--<input type="text" ng-model="a">+<input type="text" ng-model="b">=<span>{{a*1+b*1}}</span>-->
+<!--</body>-->
+<body ng-app="myapp">
+    <div ng-controller="control">
+        <input type="text" ng-model="aa">
+        <input type="text" ng-model="aa">
+        <!--{{aa}}-->
+    </div>
+</body>
+<script>
+    /*
+    * 依赖注入
+    *
+    * 控制器作用：将相应的数据放到相应的视图当中
+    * */
+    angular.module("myapp",[])
+        .controller("control",function ($scope) {
+            $scope.aa=10;
+            console.log($scope)
+        })
+</script>
+</html>
