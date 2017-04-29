@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="script/angular.min.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.css">
+</head>
+<body>
+<style>
+    table{
+        text-align: center;
+    }
+</style>
+
+<!--<form class="form-inline">-->
+    <!--<div class="form-group">-->
+        <!--<label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>-->
+        <!--<div class="input-group">-->
+            <!--<div class="input-group-addon">-</div>-->
+
+            <!--<input type="text" class="form-control" id="exampleInputAmount" placeholder="num" ng-model="item.num">-->
+            <!--<div class="input-group-addon">+</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</form>-->
+
+<table class="table table-center">
+    <tr>
+        <th class="text-center">名称</th>
+        <th class="text-center">单价</th>
+        <th class="text-center">数量</th>
+        <th class="text-center">总价</th>
+        <th class="text-center">操作</th>
+    </tr>
+    <tr ng-repeat="item in data">
+        <td>{{item.name}}</td>
+        <td>{{item.price}}</td>
+        <td>
+            <form class="form-inline">
+                <div class="form-group">
+                    <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
+                    <div class="input-group">
+                        <div class="input-group-addon ">-</div>
+
+                        <input type="text" class="form-control" id="exampleInputAmount" placeholder="Amount">
+                        <div class="input-group-addon">+</div>
+                    </div>
+                </div>
+            </form>
+        </td>
+        <td>{{item.num*item.price}}</td>
+        <td class="btn btn-danger" type="submit">删除</td>
+
+    </tr>
+
+    <tr>
+        <td>总数量</td>
+        <td>{{getNum()}}</td>
+        <td>总价</td>
+        <td>{{getPrice()}}</td>
+        <td class="btn btn-danger" type="submit">清空购物车</td>
+    </tr>
+
+
+</table>
+
+<script>
+    angular.module("myapp",[])
+        .controller("car",["$scope",function ($scope) {
+            $scope.data=[
+                {name:"衣服",price:100,num:2},
+                {name:"裤子",price:150,num:1},
+                {name:"帽子",price:50,num:3},
+                {name:"袜子",price:20,num:5},
+                {name:"玩具",price:80,num:2},
+                {name:"电脑",price:5000,num:1},
+                {name:"饮料",price:5,num:3}
+            ];
+
+            $scope.getNums=function () {
+                var nums=0;
+                $scope.data.forEach(function (val,index) {
+                    var num=val.
+                    nums+=val.num;
+                })
+                return nums;
+            }
+
+            $scope.getNums=function () {
+                var nums=0;
+                $scope.data.forEach(function (val,index) {
+                    nums+=val.num;
+                })
+                return nums;
+            }
+
+        }])
+</script>
+
+</body>
+</html>
