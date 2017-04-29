@@ -70,10 +70,15 @@
             {id:'4',name:"打底裤",price:"35",num:"1"}
             ];
             //总量
-            $scope.getNum=function () {
+           $scope.getNum=function () {
                 var nums=0;
                 angular.forEach($scope.data,function (val,index,array) {
-                   nums+=array[index].num*1;
+                   var numsq=array[index].num*1;
+                   if(parseInt(numsq)>0&&parseInt(numsq)){
+                       nums+=numsq;
+                   }else{
+                       array[index].num=0;
+                   }
                 })
                 return nums;
             }
