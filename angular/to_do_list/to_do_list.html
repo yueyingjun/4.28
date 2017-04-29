@@ -54,7 +54,7 @@
             <div class="right col-lg-10 col-sm-8 col-xs-7" ng-show="showSel==true">
                 <div class="header">
                     <h3><input type="text" ng-model="curCon.title" ng-blur="blur()"></h3>
-                    <div class="addList" ng-click="addSon()" ng-show="data.length>0">
+                    <div class="addList" ng-click="addSon()" ng-show="showSel==true">
                         <span class="glyphicon glyphicon-plus"></span>
                         <span>添加条目</span>
                     </div>

@@ -15,7 +15,8 @@ angular.module("myapp",[]).controller("ctrl",["$scope","$filter",function ($scop
     $scope.$watch("search",function () {
         var arr=$filter("filter")($scope.data,{title:$scope.search});
         $scope.curindex=0;
-        $scope.curCon=arr[$scope.curindex]
+        $scope.curCon=arr[$scope.curindex];
+        $scope.showSel=true;
     });
     //添加列表
     $scope.addList=function () {
