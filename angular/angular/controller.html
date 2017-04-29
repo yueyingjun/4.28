@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="./bower_components/angular/angular.min.js"></script>
+</head>
+<body  ng-app="myapp">
+  <div ng-controller="control">
+      <!--ng-controller为一个大的视图  在这一整个视图中都可以接受到数据中传入的数据  $scope-->
+      <input type="text" ng-model="aa"/>
+      <input type="text" ng-model="aa"/>
+      <!--视图  中接受到从数据中的数据  其中一个数据变化另一个数据也会相应的发生变化
+      这就是双向数据绑定-->
+  </div>
+</body>
+<script>
+    /*
+    * []依赖注入   手动启动
+    * */
+
+    angular.module("myapp",[])//作用的范围
+            .controller("control",[$scope,function(a){//不能够更改   依赖注入
+                //console.log($scope);//区间  范围  有层级关系  数据放入$scope
+                //解析的时候   用angular的引擎 {{}}
+
+                a.aa=10;
+            }])
+</script>
+</html>
