@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../angular.min.js"></script>
+</head>
+<body ng-app="myapp">
+    <div ng-controller="ctrl">
+        价钱：<input type="text" ng-model="price">
+        折扣：<span>{{zk}}</span>
+        <!--应付：<span>{{total}}</span>-->
+        应付：<span>{{price*zk}}</span>
+    </div>
+</body>
+<script>
+    angular.module("myapp",[]).controller("ctrl",function($scope){
+        $scope.price=100;
+        $scope.zk=0.5;
+        $scope.total=$scope.price*$scope.zk;
+    })
+</script>
+</html>
