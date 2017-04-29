@@ -35,10 +35,10 @@
                 <th>总价</th>
                 <th>操作</th>
             </tr>
-            <tr ng-show="item.length==0">
-                <td>没有商品信息</td>
+            <tr ng-show="data.length==0">
+                <td colspan="5">没有商品信息</td>
             </tr>
-            <tr ng-repeat="item in data | filter:{name:search}:false" ng-hide="item.length==0">
+            <tr ng-repeat="item in data | filter:{name:search}:false" ng-hide="data.length==0">
                 <td>{{item.name}}</td>
                 <td>{{item.price}}</td>
                 <td>
@@ -87,10 +87,12 @@
         $scope.getNums=function () {
             var nums=0;
             $scope.data.forEach(function (val,index) {
-                if(val.num>0&&val.num){
-                    nums+=parseInt(val.num);
+                var num=val.num;
+                if(parseInt(num)>0&&parseInt(num)){
+                    nums+=parseInt(num);
+                    val.num=parseInt(num);
                 }else{
-                    nums=0;
+                    val.num=0;
                 }
             });
             return nums;
@@ -104,8 +106,6 @@
             });
             return prices;
         };
-
-        
         //删除
         $scope.del=function (id) {
             $scope.data.forEach(function (val,index) {
