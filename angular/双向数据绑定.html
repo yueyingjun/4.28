@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/angular.min.js"></script>
+</head>
+<body ng-app="lyApp">
+    <div ng-controller="control">
+        <input type="text" ng-model="aa">
+        <input type="text" ng-model="aa">
+    </div>
+</body>
+<script>
+//    angular.module("lyApp",[]).controller("control",function ($scope) {
+//        $scope.aa=112;
+//    });
+    angular.module("lyApp",[]).controller("control",["$scope",function (a) {
+        a.aa=112;
+    }]);
+    //流程
+        //1.引入angular.min.js
+        //2.手动启动一下
+            // ng-app表示angular的作用范围
+            // ng-app有默认属性值
+            // angular.module("lyApp",[])   []表示注入依赖
+        //3.将相应的数据放到相应的视图当中
+            //.controller("control",function ($scope) {
+            //    $scope.aa=112;
+            //})
+</script>
+</html>

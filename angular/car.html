@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>购物清单</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <script src="js/angular.min.js"></script>
+</head>
+<body ng-app="lyApp">
+    <!--<form class="form-inline">-->
+    <div class="input-group">
+        <div class="input-group-addon">搜索</div>
+        <input type="text" class="form-control" id="exampleInputAmount" placeholder="Search" ng-model="search">
+        <div class="input-group-addon">GO</div>
+    </div>
+    <!--</form>-->
+    <table class="table table-bordered text-center" ng-controller="control">
+        <tr>
+            <th class="text-center">商品名称</th>
+            <th class="text-center">数量</th>
+            <th class="text-center">单价</th>
+            <th class="text-center">价格</th>
+            <th class="text-center">操作</th>
+        </tr>
+        <tr>
+            <td colspan="5" ng-show="data.length==0">您还没有购买任何东西</td>
+        </tr>
+        <tr ng-repeat="item in data | filter:{name:search}">
+            <td>{{item.name}}</td>
+            <td>
+                <div class="input-group">
+                    <div class="input-group-addon" ng-click="jian(item.id)">-</div>
+                    <input type="text" class="form-control" id="exampleInputAmount" placeholder="{{item.nums}}" ng-model="item.num">
+                    <div class="input-group-addon" ng-click="jia(item.id)">+</div>
+                </div>
+            </td>
+            <td>{{item.price}}</td>
+            <td>{{item.nums*item.price}}</td>
+            <td>
+                <button type="button" class="btn btn-danger" ng-click="del(item.id)">删除</button>
+            </td>
+        </tr>
+        <tr>
+            <td>数量</td>
+            <td>{{getNums()}}</td>
+            <td>总价</td>
+            <td>{{getPrices()}}</td>
+            <td>
+                <button type="button" class="btn btn-danger" ng-click="clear()">清空购物车</button>
+            </td>
+        </tr>
+    </table>
+</body>
+<script>
+    angular.module("lyApp",[]).controller("control",["$scope",function ($scope) {
+        $scope.data=[
+            {id:1,name:"衣服",price:100,num:2},
+            {id:2,name:"袜子",price:10,num:20},
+            {id:3,name:"裤子",price:150,num:2},
+            {id:4,name:"皮带",price:50,num:10},
+            {id:5,name:"帽子",price:20,num:5},
+            {id:6,name:"鞋子",price:180,num:10}
+        ];
+
+        //获取总数量
+        $scope.getNums=function () {
+            var nums=0;
+            $scope.data.forEach(function(val,index){
+                if(parseInt(val.num)>0&&parseInt(val.num)){
+                    nums+=parseInt(val.num);
+                    val.nums=parseInt(val.num);
+                }else{
+                    val.nums=0;
+                }
+            });
+            return nums;
+        };
+        //获取总价       
+        $scope.getPrices=function () {
+            var nums=0;
+            $scope.data.forEach(function(val,index){
+                nums+=val.nums*val.price;
+            })
+            return nums;
+        };
+        //删除
+        $scope.del=function(id){
+            for(var i=0;i<$scope.data.length;i++){
+                if(id==$scope.data[i].id){
+                    $scope.data.splice(i,1);
+                }
+            }
+        };
+        //清空购物车
+        $scope.clear=function(){
+            $scope.data=[];
+        };
+        //加
+        $scope.jia=function(id){
+            $scope.data.forEach(function(val,index){
+                if(id===val.id){
+                    val.num++;
+                }
+            })
+        };
+        //减
+        $scope.jian=function(id){
+            $scope.data.forEach(function(val,index){
+                if(id===val.id){
+                    val.num--;
+                }
+            })
+        }
+    }]);
+</script>
+</html>
