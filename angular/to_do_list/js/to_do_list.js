@@ -24,10 +24,12 @@ angular.module("myapp",[]).controller("ctrl",["$scope","$filter",function ($scop
         obj.id=getId($scope.data);
         obj.title="新建事项"+obj.id;
         obj.son=[];
-        var curid=1;
-
-
         $scope.data.push(obj);
+
+        $scope.showSel=true;
+        $scope.curindex=getIndex($scope.data,obj.id);
+        $scope.curCon=$scope.data[$scope.curindex];
+
         localStorage.data=JSON.stringify($scope.data);
     };
     $scope.focus=function (id) {
